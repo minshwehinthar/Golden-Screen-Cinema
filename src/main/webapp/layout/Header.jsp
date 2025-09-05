@@ -45,7 +45,7 @@ if (user != null) {
 					class="text-sm font-medium hover:text-indigo-600">Movies</a> <a
 					href="cinemas.jsp"
 					class="text-sm font-medium hover:text-indigo-600">Cinemas</a> <a
-					href="food.jsp" class="text-sm font-medium hover:text-indigo-600">Food</a>
+					href="foods.jsp" class="text-sm font-medium hover:text-indigo-600">Food</a>
 				<a href="faq.jsp" class="text-sm font-medium hover:text-indigo-600">FAQ</a>
 				<a href="reviews.jsp"
 					class="text-sm font-medium hover:text-indigo-600">Reviews</a> <a
@@ -132,7 +132,7 @@ if (user != null) {
 				class="block text-gray-700 font-medium hover:text-indigo-600">Movies</a>
 			<a href="cinemas.jsp"
 				class="block text-gray-700 font-medium hover:text-indigo-600">Cinemas</a>
-			<a href="food.jsp"
+			<a href="foods.jsp"
 				class="block text-gray-700 font-medium hover:text-indigo-600">Food</a>
 			<a href="faq.jsp"
 				class="block text-gray-700 font-medium hover:text-indigo-600">FAQ</a>

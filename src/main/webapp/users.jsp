@@ -85,7 +85,7 @@ if (user == null || !"admin".equals(user.getRole())) {
 									<td class="px-6 py-4 text-right"><%=rs.getString("phone")%></td>
 									<td class="px-6 py-4 text-right"><span
 										class="<%="active".equals(rs.getString("status")) ? "bg-green-400 text-xs text-white rounded-full px-2 py-1"
-		: "text-red-600"%> font-semibold">
+		: "bg-red-400 text-xs text-white rounded-full px-2 py-1"%> font-semibold">
 											<%=rs.getString("status")%>
 									</span></td>
 									<td class="px-6 py-4 text-right">

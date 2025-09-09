@@ -31,4 +31,26 @@ public class TheaterDAO {
         }
         return list;
     }
+    
+    public Theater getTheaterById(int theaterId) {
+        Theater theater = null;
+        String sql = "SELECT * FROM theaters WHERE id=?";
+        try (Connection con = MyConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, theaterId);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                theater = new Theater();
+                theater.setId(rs.getInt("id"));
+                theater.setName(rs.getString("name"));
+                theater.setLocation(rs.getString("location"));
+                theater.setSeatTotal(rs.getInt("seat_total"));
+                theater.setContact(rs.getString("contact"));
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return theater;
+    }
+
 }

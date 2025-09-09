@@ -5,14 +5,18 @@ public class FoodItem {
     private String name;
     private String image;
     private double price;
-    private String description; // optional
+    private String description; 
+    private String foodType; // snack or drink
+    private double rating;   // NEW
 
     public FoodItem() {}
 
-    public FoodItem(String name, String image, double price) {
+    public FoodItem(String name, String image, double price, String foodType, double rating) {
         this.name = name;
         this.image = image;
         this.price = price;
+        this.foodType = foodType;
+        this.rating = rating;
     }
 
     // Getters & Setters
@@ -30,4 +34,10 @@ public class FoodItem {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public String getFoodType() { return foodType; }
+    public void setFoodType(String foodType) { this.foodType = foodType; }
+
+    public double getRating() { return rating; }
+    public void setRating(double rating) { this.rating = rating; }
 }

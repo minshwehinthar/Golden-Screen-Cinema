@@ -66,8 +66,10 @@ if (user != null) {
 						<span class="text-sm font-medium"><%=username%></span> <span
 							class="text-xs text-gray-500"><%=email%></span>
 					</div>
-					<img class="w-9 h-9 rounded-full object-cover border"
+					<a href="profile.jsp">
+						<img class="w-9 h-9 rounded-full object-cover"
 						src="<%=userImage%>" alt="User avatar" />
+					</a>
 					<!-- Chat Icon -->
 					<a href="chat.jsp"
 						class="hidden md:flex items-center justify-center p-2 rounded-full hover:bg-gray-100 transition"

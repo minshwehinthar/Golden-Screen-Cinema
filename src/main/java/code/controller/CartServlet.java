@@ -31,7 +31,7 @@ public class CartServlet extends HttpServlet {
             return;
         }
 
-        // Handle different actions: remove, update, view
+        // Handle actions: remove or update
         String action = request.getParameter("action");
         if (action != null) {
             switch (action) {
@@ -44,6 +44,7 @@ public class CartServlet extends HttpServlet {
                 case "update":
                     int updateCartId = Integer.parseInt(request.getParameter("cartId"));
                     int quantity = Integer.parseInt(request.getParameter("quantity"));
+                    if (quantity < 1) quantity = 1; // prevent zero or negative
                     cartDAO.updateQuantity(updateCartId, quantity);
                     response.sendRedirect("cart?action=view");
                     return;
@@ -52,17 +53,15 @@ public class CartServlet extends HttpServlet {
 
         // Default: view cart
         List<CartItem> cartItems = cartDAO.getCartItems(user.getId());
-        if(cartItems == null) cartItems = new java.util.ArrayList<>();
+        if (cartItems == null) cartItems = new java.util.ArrayList<>();
 
-        request.setAttribute("cartItems", cartItems);
-
-        // Calculate total for checkout
         double totalAmount = cartItems.stream()
                                       .mapToDouble(c -> c.getFood().getPrice() * c.getQuantity())
                                       .sum();
+
+        request.setAttribute("cartItems", cartItems);
         request.setAttribute("totalAmount", totalAmount);
 
-        // Forward to cart page
         request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
 
@@ -81,7 +80,9 @@ public class CartServlet extends HttpServlet {
         try {
             int foodId = Integer.parseInt(request.getParameter("food_id"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
+            if (quantity < 1) quantity = 1;
 
+            // Add to cart
             cartDAO.addToCart(user.getId(), foodId, quantity);
 
         } catch (NumberFormatException e) {

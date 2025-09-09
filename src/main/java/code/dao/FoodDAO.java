@@ -1,7 +1,6 @@
 package code.dao;
 
 import code.model.FoodItem;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +23,8 @@ public class FoodDAO {
                 f.setPrice(rs.getDouble("price"));
                 f.setImage(rs.getString("image"));
                 f.setDescription(rs.getString("description"));
+                f.setFoodType(rs.getString("food_type"));
+                f.setRating(rs.getDouble("rating")); // NEW
                 list.add(f);
             }
 
@@ -48,6 +49,8 @@ public class FoodDAO {
                 food.setPrice(rs.getDouble("price"));
                 food.setImage(rs.getString("image"));
                 food.setDescription(rs.getString("description"));
+                food.setFoodType(rs.getString("food_type"));
+                food.setRating(rs.getDouble("rating")); // NEW
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,10 +58,9 @@ public class FoodDAO {
         return food;
     }
 
-
     // Admin: add new food
     public boolean addFood(FoodItem f) {
-        String sql = "INSERT INTO food_items(name, price, image, description) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO food_items(name, price, image, description, food_type, rating) VALUES(?,?,?,?,?,?)";
         try (Connection con = MyConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -66,6 +68,8 @@ public class FoodDAO {
             ps.setDouble(2, f.getPrice());
             ps.setString(3, f.getImage());
             ps.setString(4, f.getDescription());
+            ps.setString(5, f.getFoodType());
+            ps.setDouble(6, f.getRating()); // NEW
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {

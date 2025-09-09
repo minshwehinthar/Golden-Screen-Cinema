@@ -34,32 +34,45 @@ public class AddFoodServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String name = request.getParameter("name");
-        double price = Double.parseDouble(request.getParameter("price"));
-        Part filePart = request.getPart("image");
-        String fileName = filePart.getSubmittedFileName();
+        try {
+            String name = request.getParameter("name");
+            double price = Double.parseDouble(request.getParameter("price"));
+            String description = request.getParameter("description");
+            String foodType = request.getParameter("food_type");
+            double rating = Double.parseDouble(request.getParameter("rating")); // NEW
 
-        // Save file to server
-        String applicationPath = request.getServletContext().getRealPath("");
-        String uploadPath = applicationPath + File.separator + UPLOAD_DIR;
-        File uploadDir = new File(uploadPath);
-        if (!uploadDir.exists()) uploadDir.mkdir();
+            Part filePart = request.getPart("image");
+            String fileName = filePart.getSubmittedFileName();
 
-        String filePath = uploadPath + File.separator + fileName;
-        filePart.write(filePath);
+            // Save file
+            String applicationPath = request.getServletContext().getRealPath("");
+            String uploadPath = applicationPath + File.separator + UPLOAD_DIR;
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) uploadDir.mkdir();
 
-        // Save food info to DB
-        FoodItem food = new FoodItem();
-        food.setName(name);
-        food.setPrice(price);
-        food.setImage(UPLOAD_DIR + "/" + fileName);
+            String filePath = uploadPath + File.separator + fileName;
+            filePart.write(filePath);
 
-        FoodDAO dao = new FoodDAO();
-        boolean success = dao.addFood(food);
+            // Save to DB
+            FoodItem food = new FoodItem();
+            food.setName(name);
+            food.setPrice(price);
+            food.setImage(UPLOAD_DIR + "/" + fileName);
+            food.setDescription(description);
+            food.setFoodType(foodType);
+            food.setRating(rating); // NEW
 
-        if (success) {
-            response.sendRedirect("add-food.jsp?msg=success");
-        } else {
+            FoodDAO dao = new FoodDAO();
+            boolean success = dao.addFood(food);
+
+            if (success) {
+                response.sendRedirect("add-food.jsp?msg=success");
+            } else {
+                response.sendRedirect("add-food.jsp?msg=error");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
             response.sendRedirect("add-food.jsp?msg=error");
         }
     }

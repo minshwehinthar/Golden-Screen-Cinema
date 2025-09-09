@@ -24,29 +24,53 @@ public class ReviewServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         if (user == null) {
-            response.sendRedirect("reviews.jsp?msg=loginfirst");
+            response.sendRedirect("login.jsp");
             return;
-        }
-
-        String reviewText = request.getParameter("reviewText");
-        String isGood = request.getParameter("isGood");
-
-        if (reviewText == null || reviewText.trim().isEmpty()) {
-            response.sendRedirect("reviews.jsp?msg=empty");
-            return;
-        }
-
-        if (!"yes".equals(isGood) && !"no".equals(isGood)) {
-            isGood = "yes"; // default to yes if invalid
         }
 
         ReviewDAO dao = new ReviewDAO();
-        boolean success = dao.addReview(user.getId(), reviewText.trim(), isGood);
 
-        if (success) {
-            response.sendRedirect("reviews.jsp?msg=success");
-        } else {
-            response.sendRedirect("reviews.jsp?msg=fail");
+        // --- DELETE REVIEW LOGIC ---
+        String action = request.getParameter("action");
+        if ("delete".equals(action)) {
+            try {
+                int reviewId = Integer.parseInt(request.getParameter("reviewId"));
+                int theaterId = Integer.parseInt(request.getParameter("theaterId"));
+                dao.deleteReviewById(reviewId, user.getId());
+                response.sendRedirect("reviews.jsp?theaterId=" + theaterId);
+                return; // stop here after deletion
+            } catch (NumberFormatException e) {
+                response.sendRedirect("moduleReview.jsp");
+                return;
+            }
         }
+        // --- END DELETE LOGIC ---
+
+        // --- EXISTING ADD REVIEW LOGIC (unchanged) ---
+        String reviewText = request.getParameter("reviewText");
+        String isGood = request.getParameter("isGood");
+        String theaterIdParam = request.getParameter("theaterId");
+        String ratingParam = request.getParameter("rating");
+
+        int theaterId = 0;
+        int rating = 0;
+
+        try {
+            theaterId = Integer.parseInt(theaterIdParam);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("moduleReview.jsp");
+            return;
+        }
+
+        try {
+            rating = Integer.parseInt(ratingParam);
+        } catch (NumberFormatException e) {
+            rating = 0;
+        }
+
+        dao.addReview(user.getId(), theaterId, reviewText.trim(), isGood, rating);
+
+        response.sendRedirect("reviews.jsp?theaterId=" + theaterId);
+        // --- END EXISTING LOGIC ---
     }
 }

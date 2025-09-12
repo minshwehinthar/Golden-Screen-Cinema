@@ -51,7 +51,7 @@ function showToast(message, color = "bg-red-500") {
     toast.style.display = "block";
     setTimeout(() => { toast.style.display = "none"; }, 3000);
 }
-
+ 
 // Real-time validation and red borders
 const fields = [
     {id: "email", errorId: "emailError", validator: v => /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(v)},

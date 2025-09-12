@@ -18,6 +18,8 @@ List<Theater> theaters = theaterDAO.getAllTheaters();
 </head>
 <body class="bg-gray-50 font-sans">
 
+<jsp:include page="layout/Header.jsp"/>
+
 <div class="max-w-6xl mx-auto py-12 px-4">
     <!-- Page Heading -->
     <h1 class="text-4xl font-bold text-center text-gray-800 mb-10">Choose a Theater</h1>
@@ -44,6 +46,6 @@ List<Theater> theaters = theaterDAO.getAllTheaters();
         <% } %>
     </div>
 </div>
-
+<jsp:include page="layout/Footer.jsp"/>
 </body>
 </html>

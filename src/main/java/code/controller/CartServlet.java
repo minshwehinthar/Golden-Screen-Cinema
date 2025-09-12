@@ -3,7 +3,6 @@ package code.controller;
 import code.dao.CartDAO;
 import code.model.CartItem;
 import code.model.User;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,7 +15,6 @@ import java.util.List;
 
 @WebServlet("/cart")
 public class CartServlet extends HttpServlet {
-
     private CartDAO cartDAO = new CartDAO();
 
     @Override
@@ -25,43 +23,38 @@ public class CartServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-
         if (user == null) {
             response.sendRedirect("login.jsp");
             return;
         }
 
-        // Handle actions: remove or update
+        // Handle remove/update actions
         String action = request.getParameter("action");
         if (action != null) {
             switch (action) {
                 case "remove":
                     int cartId = Integer.parseInt(request.getParameter("cartId"));
                     cartDAO.removeItem(cartId);
-                    response.sendRedirect("cart?action=view");
-                    return;
-
+                    break;
                 case "update":
                     int updateCartId = Integer.parseInt(request.getParameter("cartId"));
                     int quantity = Integer.parseInt(request.getParameter("quantity"));
-                    if (quantity < 1) quantity = 1; // prevent zero or negative
+                    if (quantity < 1) quantity = 1;
                     cartDAO.updateQuantity(updateCartId, quantity);
-                    response.sendRedirect("cart?action=view");
-                    return;
+                    break;
             }
+            response.sendRedirect("cart");
+            return;
         }
 
-        // Default: view cart
         List<CartItem> cartItems = cartDAO.getCartItems(user.getId());
-        if (cartItems == null) cartItems = new java.util.ArrayList<>();
+        double totalAmount = cartItems.stream().mapToDouble(CartItem::getTotalPrice).sum();
 
-        double totalAmount = cartItems.stream()
-                                      .mapToDouble(c -> c.getFood().getPrice() * c.getQuantity())
-                                      .sum();
+        int cartCount = cartDAO.getCartCount(user.getId());
+        session.setAttribute("cartCount", cartCount);
 
         request.setAttribute("cartItems", cartItems);
         request.setAttribute("totalAmount", totalAmount);
-
         request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
 
@@ -71,7 +64,6 @@ public class CartServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-
         if (user == null) {
             response.sendRedirect("login.jsp");
             return;
@@ -82,13 +74,17 @@ public class CartServlet extends HttpServlet {
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             if (quantity < 1) quantity = 1;
 
-            // Add to cart
             cartDAO.addToCart(user.getId(), foodId, quantity);
+
+            int cartCount = cartDAO.getCartCount(user.getId());
+            session.setAttribute("cartCount", cartCount);
 
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
 
-        response.sendRedirect("cart?action=view");
+        // Redirect back to the current food details page
+        response.sendRedirect("foods?action=details&id=" + request.getParameter("food_id"));
     }
+
 }

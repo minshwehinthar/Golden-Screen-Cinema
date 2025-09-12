@@ -9,7 +9,7 @@
 
 <!-- Footer -->
 <footer class="border-t backdrop-blur-sm shadow-sm bg-gray-50 text-gray-800">
-    <div class="max-w-7xl mx-auto p-6">
+    <div class="container mx-auto p-6">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
 
             <!-- Brand -->

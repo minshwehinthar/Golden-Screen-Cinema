@@ -18,7 +18,7 @@
   <div class="container mx-auto px-4 py-12">
 
     <!-- Page Title -->
-    <h1 class="text-3xl font-bold text-center text-gray-800 mb-10">🍴 Our Menu</h1>
+    <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-12">🍴 Our Menu</h1>
 
     <!-- Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
@@ -30,58 +30,64 @@
       %>
 
       <!-- Food Card -->
-      <div class="bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden flex flex-col transition duration-300">
-        
+      <div class="bg-white rounded-2xl shadow hover:shadow-lg transition duration-300 overflow-hidden flex flex-col">
+
         <!-- Image -->
-        <img src="<%=f.getImage()%>" alt="<%=f.getName()%>" 
-             class="w-full h-48 object-cover">
+        <div class="flex justify-center items-center h-52 p-4">
+          <img src="<%=f.getImage()%>" alt="<%=f.getName()%>" 
+               class="max-h-full object-contain">
+        </div>
 
         <!-- Content -->
-        <div class="p-4 flex flex-col flex-grow">
-          <!-- Food Name -->
-          <h2 class="text-lg font-semibold text-gray-800 mb-2 text-center"><%=f.getName()%></h2>
+        <div class="p-5 flex flex-col flex-grow">
 
           <!-- Price -->
-          <p class="text-green-600 font-bold text-center text-lg mb-2">$<%=f.getPrice()%></p>
+          <p class="text-gray-600 text-sm mb-1">
+            From <span class="font-semibold text-gray-900">$<%=f.getPrice()%></span>
+          </p>
+
+          <!-- Food Name -->
+          <h2 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-1"><%=f.getName()%></h2>
 
           <!-- Rating -->
-          <div class="flex justify-center mb-4">
-            <%
-              int fullStars = (int) f.getRating(); // integer part
-              boolean halfStar = (f.getRating() - fullStars) >= 0.5;
-              int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+<div class="flex items-center mb-2">
+  <% 
+    int fullStars = (int) f.getRating(); 
+    boolean halfStar = (f.getRating() - fullStars) >= 0.5;
+    int emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
 
-              for(int i=0; i<fullStars; i++) { %>
-                <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.974a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.386 2.46a1 1 0 00-.364 1.118l1.286 3.974c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.176 0l-3.386 2.46c-.784.57-1.838-.197-1.539-1.118l1.285-3.974a1 1 0 00-.364-1.118L2.045 9.4c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.974z"/>
-                </svg>
-            <% } 
-              if(halfStar) { %>
-                <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10 15l-3.09 1.62.59-3.44-2.5-2.44 3.46-.5L10 7l1.54 3.24 3.46.5-2.5 2.44.59 3.44z"/>
-                </svg>
-            <% } 
-              for(int i=0; i<emptyStars; i++) { %>
-                <svg class="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.974a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.386 2.46a1 1 0 00-.364 1.118l1.286 3.974c.3.921-.755 1.688-1.54 1.118l-3.386-2.46a1 1 0 00-1.176 0l-3.386 2.46c-.784.57-1.838-.197-1.539-1.118l1.285-3.974a1 1 0 00-.364-1.118L2.045 9.4c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.974z"/>
-                </svg>
-            <% } %>
-          </div>
+    // Full stars
+    for(int i=0; i<fullStars; i++) { %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.974a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.974c.3.921-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.176 0l-3.385 2.46c-.785.57-1.84-.197-1.54-1.118l1.287-3.974a1 1 0 00-.364-1.118L2.097 9.401c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.974z"/>
+      </svg>
+  <% } 
+    // Half star
+    if(halfStar) { %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.974a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.974c.3.921-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-.588-.236V2.927z"/>
+      </svg>
+  <% } 
+    // Empty stars
+    for(int i=0; i<emptyStars; i++) { %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-gray-300" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.974a1 1 0 00.95.69h4.178c.969 0 1.371 1.24.588 1.81l-3.385 2.46a1 1 0 00-.364 1.118l1.287 3.974c.3.921-.755 1.688-1.54 1.118l-3.385-2.46a1 1 0 00-1.176 0l-3.385 2.46c-.785.57-1.84-.197-1.54-1.118l1.287-3.974a1 1 0 00-.364-1.118L2.097 9.401c-.783-.57-.38-1.81.588-1.81h4.178a1 1 0 00.95-.69l1.286-3.974z"/>
+      </svg>
+  <% } %>
 
-          <!-- Actions -->
-          <div class="mt-auto space-y-2">
+  <span class="ml-2 text-sm text-gray-500">(<%=Math.round(f.getRating())%>)</span>
+</div>
+
+
+          <!-- Description -->
+          <p class="text-gray-500 text-sm mb-4 line-clamp-2"><%=f.getDescription()%></p>
+
+          <!-- Button -->
+          <div class="mt-auto">
             <a href="foods?action=details&id=<%=f.getId()%>"
-               class="block w-full text-center text-indigo-600 hover:text-indigo-800 font-medium text-sm">
+               class="block w-full text-center border border-gray-300 hover:border-gray-400 text-gray-800 font-medium text-sm py-2 rounded-lg transition">
               View Details
             </a>
-            <form action="cart" method="post" class="w-full">
-              <input type="hidden" name="food_id" value="<%=f.getId()%>">
-              <input type="hidden" name="quantity" value="1">
-              <button type="submit"
-                      class="w-full bg-green-600 hover:bg-green-700 text-white text-sm py-2 rounded-lg transition">
-                Add to Cart
-              </button>
-            </form>
           </div>
         </div>
       </div>
@@ -94,6 +100,8 @@
       <% } %>
     </div>
   </div>
+  
+  <jsp:include page="layout/Footer.jsp"/>
 
 </body>
 </html>
